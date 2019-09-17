@@ -16,5 +16,6 @@ const CollectionPreview = ({ title, items }) => (
     </div>
   </div>
 );
-
+//This section could be setup differently, with a selector that would work with a clickable arrow feature to display all items, not just a max of 4, depending on 
+// needs of company, desired design of sales pages.
 export default CollectionPreview;
