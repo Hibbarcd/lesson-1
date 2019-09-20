@@ -5,14 +5,16 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { connect } from 'react-redux'
 
 import { createStructuredSelector } from 'reselect'
+
 import { selectCurrentUser } from './redux/user/user.selectors'
+import { setCurrentUser } from './redux/user/user.actions';
 
 import Homepage from './pages/homepage/homepage.component'
 import ShopPage from './pages/shop/shop.component'
 import CheckoutPage from './pages/checkout/checkout.component'
-import Header from './components/header/header.component'
 import SignUpAndSignInPage from './pages/signIn-signup/signin-signup.component'
-import { setCurrentUser } from './redux/user/user.actions';
+
+import Header from './components/header/header.component'
 
 
 class App extends React.Component {
@@ -34,10 +36,7 @@ class App extends React.Component {
           })
         })
       }
-
-      setCurrentUser({userAuth})
-      createUserProfileDocument(userAuth)
-      console.log(userAuth)
+      setCurrentUser(userAuth)
     })
     }
   componentWillUnmount() {
@@ -52,11 +51,12 @@ render() {
         <Route exact path='/' component={Homepage}/>
         <Route path='/shop' component={ShopPage}/>
         <Route exact path='/checkout' component={CheckoutPage}/>
-        <Route exact path='/signin' render= {
-          () => this.props.currentUser ? 
-          (<Redirect to='/' /> ) : 
-          (< SignUpAndSignInPage/> 
-            )}
+        <Route exact path='/signin' 
+          render= {() => 
+            this.props.currentUser ? (
+            <Redirect to='/' /> ) : 
+            (< SignUpAndSignInPage/> 
+          )}
             />
     </Switch>
     </div>
@@ -74,7 +74,4 @@ const mapDispatchToProps = dispatch => ({
 
 //==============================================================================================================
 
-export default connect(
-                      mapStateToProps,
-                      mapDispatchToProps
-                      )(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App);
