@@ -39,6 +39,36 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 }
 // Initialize Firebase
 firebase.initializeApp(Config);
+//===========================shop data list stored within firebase the easy way================//
+// export const addCollectionAndDocuments = async ( collectionKey, objectsToAdd ) => {
+//   const collectionRef = firestore.collection(collectionKey)
+//   console.log(collectionRef)
+
+//   const batch = firestore.batch()
+//     objectsToAdd.forEach( obj => {
+//       const newDocRef = collectionRef.doc(obj.title)
+//       batch.set(newDocRef, obj)
+//       // console.log(newDocRef)
+//     })
+//     return await batch.commit()
+// }
+ export const convertCollectionsSnapToMap = collections => {
+   const transformedCollection = collections.docs.map( doc => {
+     const { title, items } = doc.data()
+
+     return {
+       routeName: encodeURI(title.toLowerCase()),
+       id: doc.id,
+       title,
+       items
+   }
+   })
+   console.log(transformedCollection)
+   return transformedCollection.reduce((accumulator, collection) => {accumulator[collection.title.toLowerCase()] = collection
+  return accumulator
+}, {})
+ }
+
 //OAuth for google sign in on firebase------------------------------------------//
   export const auth = firebase.auth()
 
